@@ -23,3 +23,5 @@ DELETE FROM burgers WHERE id = 9;
 
 -- show table
 SELECT * FROM burgers;
+
+INSERT INTO burgers (burger_name, devoured) VALUES ('Traditional', 1);
