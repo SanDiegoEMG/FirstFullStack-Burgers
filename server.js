@@ -2,7 +2,7 @@ require(`dotenv`).config();
 var express = require("express");
 var app = express();
 var mysql = require('mysql');
-var exphbs  = require('express-handlebars');
+var exphbs = require('express-handlebars');
 
 
 var PORT = process.env.PORT || 8080;
@@ -29,19 +29,28 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 // handlebar requirements -- must be above the routes
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 app.get("/", function (req, res) {
     res.send("Fight one giant at a time")
 });
 
+app.get("/home", function (req, res) {
+    connection.query("SELECT * FROM burgers", function (err, data) {
+        console.log(data);
+        res.render("home", {
+            burgers: data
+        })
+    })
+})
+
 app.get("/handle", function (req, res) {
     res.render("home");
 });
 
-app.get("/table", function (req, res){
-    connection.query("SELECT * FROM burgers", function(err, data) {
+app.get("/table", function (req, res) {
+    connection.query("SELECT * FROM burgers", function (err, data) {
         res.json(data);
     })
 })

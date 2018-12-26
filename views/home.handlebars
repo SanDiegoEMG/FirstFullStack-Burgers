@@ -22,12 +22,13 @@
     <section class="container-fluid">
         <h1> Hello World! (via Handlebars)</h1>
 
-        <table>
-            <thead>How do you like it?</thead>
-            <ul>
-                <li>Gross!</li>
-            </ul>
-        </table>
+        <header>Here are your Burger options</header>
+        <ul id="burgers_to_eat">
+            {{#each burgers}}
+            <li>{{this.burger_name}}</li>
+            {{/each}}
+        </ul>
+
     </section>
 
 
