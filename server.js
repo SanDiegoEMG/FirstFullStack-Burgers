@@ -60,8 +60,8 @@ app.get("/table", function (req, res) {
 app.post("/post/new", function (req, res) {
     connection.query("INSERT INTO burgers SET ?", [req.body], function(err, data){
         if(err) throw err;
+        res.redirect("/hometwo");
     })
-    res.json(req.body);
 });
 
 app.listen(PORT, function () {
