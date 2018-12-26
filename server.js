@@ -36,7 +36,22 @@ app.get("/", function (req, res) {
     res.send("Fight one giant at a time")
 });
 
-app.get("/hometwo", function (req, res) {
+
+app.get("/api/burger", function (req, res) {
+    connection.query("SELECT * FROM burgers", function (err, data) {
+        if (err) throw err;
+        res.json(data);
+    })
+})
+
+app.get("/api/burger/:id", function (req, res) {
+    connection.query("SELECT * FROM burgers WHERE id = ?", [req.params.id], function (err, data) {
+        if (err) throw err;
+        res.json(data);
+    })
+})
+
+app.get("*", function (req, res) {
     connection.query("SELECT * FROM burgers", function (err, data) {
         console.log(data);
         res.render("hometwo", {
@@ -45,24 +60,20 @@ app.get("/hometwo", function (req, res) {
     })
 })
 
-app.get("/handle", function (req, res) {
-    if(err) throw err;
-    res.render("home");
-});
-
-app.get("/table", function (req, res) {
-    connection.query("SELECT * FROM burgers", function (err, data) {
-        if (err) throw err;
-        res.json(data);
-    })
-})
-
-app.post("/post/new", function (req, res) {
+app.post("/api/burger", function (req, res) {
     connection.query("INSERT INTO burgers SET ?", [req.body], function(err, data){
         if(err) throw err;
         res.redirect("/hometwo");
     })
 });
+
+app.delete("/api/burger/:id", function(req, res){
+    var id = req.params.id;
+    connection.query("DELETE FROM burgers WHERE id = ?", [id], function(err, data) {
+        if(err) throw err;
+        res.json(id);
+    })
+})
 
 app.listen(PORT, function () {
     console.log(`Server is running on http://localhost:${PORT}`);

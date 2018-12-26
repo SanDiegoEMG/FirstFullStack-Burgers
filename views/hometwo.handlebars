@@ -29,7 +29,7 @@
 
         <div class="row">
             <div class="col-lg-6">
-                <form class="create-form" action="/post/new" method="POST">
+                <form class="create-form" action="/api/burger" method="POST">
                     <div class="form-group">
                         <label for="b_name">Burger Name:</label>
                         <input type="text" id="b_name" name="burger_name">
@@ -65,7 +65,7 @@
                     <th scope="row">{{this.id}}</th>
                     <td> {{this.burger_name}}</td>
                     <td>{{this.meat_type}}</td>
-                    <td> <button type="button" class="btn btn-outline-danger btn-sm">delete</button> <button type="button"
+                    <td> <button type="button" data-id="{{this.id}}" class="btn btn-outline-danger btn-sm del-burger">delete</button> <button type="button"
                             class="btn btn-success btn-sm">eat</button></td>
                 </tr>
                 {{/each}}
@@ -84,6 +84,20 @@
             </div>
         </div>
     </section>
-</body>
 
+    <script>
+        $(".del-burger").on("click", function(e){
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+            $.ajax({
+                url: `/api/burger/${id}`,
+                method: "DELETE"
+            }).then(function(data){
+                if(data){
+                    location.reload();
+                }
+            })
+        })
+    </script>
+</body>
 </html>
