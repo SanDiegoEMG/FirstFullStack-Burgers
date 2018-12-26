@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Stacked Burger</title>
+</head>
+
+<body>
+
+    <section class="jumbotron">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1 class="display-3">Full Stack Burger </h1>
+                <h3 class="lead">Feed your Need for Deliciousness</h3>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="container fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Create a Delicious Burger!</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <form class="create-form">
+                    <div class="form-group">
+                        <label for="b_name">Burger Name:</label>
+                        <input type="text" id="b_name" name="name">
+                        <p> </p>
+                        <label for="m_type">Meat type:</label>
+                        <input type="text" id="m_type" name="type">
+                        <p></p>
+                        <button type="submit">Add Burger</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="container fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Burger options</h2>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">db id</th>
+                    <th scope="col">Burger Name</th>
+                    <th scope="col">type of meat</th>
+                    <th scope="col">edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each burgers}}
+                <tr>
+                    <th scope="row">{{this.id}}</th>
+                    <td> {{this.burger_name}}</td>
+                    <td>{{this.meat_type}}</td>
+                    <td> <button type="button" class="btn btn-outline-danger btn-sm">delete</button> <button type="button"
+                            class="btn btn-success btn-sm">eat</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Burgers you ate</h2>
+
+                <ul>
+                </ul>
+
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -36,10 +36,10 @@ app.get("/", function (req, res) {
     res.send("Fight one giant at a time")
 });
 
-app.get("/home", function (req, res) {
+app.get("/hometwo", function (req, res) {
     connection.query("SELECT * FROM burgers", function (err, data) {
         console.log(data);
-        res.render("home", {
+        res.render("hometwo", {
             burgers: data
         })
     })
