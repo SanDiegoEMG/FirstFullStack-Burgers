@@ -46,16 +46,21 @@ app.get("/hometwo", function (req, res) {
 })
 
 app.get("/handle", function (req, res) {
+    if(err) throw err;
     res.render("home");
 });
 
 app.get("/table", function (req, res) {
     connection.query("SELECT * FROM burgers", function (err, data) {
+        if (err) throw err;
         res.json(data);
     })
 })
 
-app.post("/api/post", function (req, res) {
+app.post("/post/new", function (req, res) {
+    connection.query("INSERT INTO burgers SET ?", [req.body], function(err, data){
+        if(err) throw err;
+    })
     res.json(req.body);
 });
 
