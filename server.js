@@ -74,6 +74,15 @@ app.delete("/api/burger/:id", function(req, res){
     });
 });
 
+app.put("/api/burger/:id", function(req, res){
+    var id = req.params.id;
+    connection.query("UPDATE burgers SET devoured = 1 WHERE id = ?", [id], function(err, data) {
+        if(err) throw err;
+        console.log(id);
+        res.json(data);
+    });
+});
+
 app.listen(PORT, function () {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
