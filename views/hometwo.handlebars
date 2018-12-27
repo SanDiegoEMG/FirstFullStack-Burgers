@@ -27,9 +27,10 @@
             </div>
         </div>
 
+        {{!-- these two - action="/api/burger" method="POST" - added to form make the submission trigger the server listener .... replaced by an ajax call in 'script' section of this document:  --}}
         <div class="row">
             <div class="col-lg-6">
-                <form class="create-form" action="/api/burger" method="POST">
+                <form class="create-form" id="add-burger">
                     <div class="form-group">
                         <label for="b_name">Burger Name:</label>
                         <input type="text" id="b_name" name="burger_name">
@@ -65,39 +66,58 @@
                     <th scope="row">{{this.id}}</th>
                     <td> {{this.burger_name}}</td>
                     <td>{{this.meat_type}}</td>
-                    <td> <button type="button" data-id="{{this.id}}" class="btn btn-outline-danger btn-sm del-burger">delete</button> <button type="button"
-                            class="btn btn-success btn-sm">eat</button></td>
+                    <td>
+                        <button type="button" data-id="{{this.id}}" class="btn btn-outline-danger btn-sm del-burger">delete</button>
+
+                        <button type="button" class="btn btn-success btn-sm" data-id="{{this.id}}">eat</button>
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
 
-
-
         <div class="row">
             <div class="col-lg-6">
                 <h2>Burgers you ate</h2>
-
-                <ul>
-                </ul>
-
+                <ul></ul>
             </div>
         </div>
     </section>
 
     <script>
-        $(".del-burger").on("click", function(e){
+        $(".del-burger").on("click", function (e) {
             e.preventDefault();
             var id = $(this).attr("data-id");
             $.ajax({
                 url: `/api/burger/${id}`,
                 method: "DELETE"
-            }).then(function(data){
-                if(data){
+            }).then(function (data) {
+                if (data) {
+                    console.log(data.burger_name);
                     location.reload();
                 }
             })
         })
+
+        $("#add-burger").on("submit", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/api/burger",
+                method: "POST",
+                data: {
+                    burger_name: $("#b_name").val().trim(),
+                    meat_type: $("#m_type").val().trim(),
+                    devoured: 1,
+                }
+            }).then(function (data) {
+                if (data) {
+                    location.reload()
+                }
+            })
+        })
+
+
     </script>
 </body>
+
 </html>

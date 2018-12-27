@@ -53,7 +53,6 @@ app.get("/api/burger/:id", function (req, res) {
 
 app.get("*", function (req, res) {
     connection.query("SELECT * FROM burgers", function (err, data) {
-        console.log(data);
         res.render("hometwo", {
             burgers: data
         })
@@ -71,9 +70,9 @@ app.delete("/api/burger/:id", function(req, res){
     var id = req.params.id;
     connection.query("DELETE FROM burgers WHERE id = ?", [id], function(err, data) {
         if(err) throw err;
-        res.json(id);
-    })
-})
+        res.json(data);
+    });
+});
 
 app.listen(PORT, function () {
     console.log(`Server is running on http://localhost:${PORT}`);

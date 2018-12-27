@@ -25,6 +25,9 @@ DELETE FROM burgers WHERE id = 2;
 -- show table
 SELECT * FROM burgers;
 
-INSERT INTO burgers (burger_name, meat_type, devoured) VALUES ('Traditional', "beef", 1);
+UPDATE burgers SET devoured = 0;
+
+
+INSERT INTO burgers (burger_name, meat_type) VALUES ('Traditional', "beef");
 INSERT INTO burgers (burger_name, meat_type, devoured) VALUES ('Extreme', "various", 0);
 INSERT INTO burgers (burger_name, meat_type, devoured) VALUES ('Vegetarian', "plant based", 0);
