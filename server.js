@@ -4,6 +4,10 @@ var app = express();
 var mysql = require('mysql');
 var exphbs = require('express-handlebars');
 
+// tells server to accept these forms of data
+// keep this up top close under require variables
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 var PORT = process.env.PORT || 8080;
 
@@ -24,25 +28,23 @@ connection.connect(function (err) {
     console.log("connected as id " + connection.threadId);
 });
 
-// tells server to accept these forms of data
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
+
 
 // handlebar requirements -- must be above the routes
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-app.get("/", function (req, res) {
-    res.send("Fight one giant at a time")
-});
+// app.get("/", function (req, res) {
+//     res.send("Fight one giant at a time")
+// });
 
 
-app.get("/api/burger", function (req, res) {
-    connection.query("SELECT * FROM burgers", function (err, data) {
-        if (err) throw err;
-        res.json(data);
-    })
-})
+// app.get("/api/burger", function (req, res) {
+//     connection.query("SELECT * FROM burgers", function (err, data) {
+//         if (err) throw err;
+//         res.json(data);
+//     })
+// })
 
 app.get("/api/burger/:id", function (req, res) {
     connection.query("SELECT * FROM burgers WHERE id = ?", [req.params.id], function (err, data) {
@@ -53,7 +55,7 @@ app.get("/api/burger/:id", function (req, res) {
 
 app.get("*", function (req, res) {
     connection.query("SELECT * FROM burgers", function (err, data) {
-        res.render("hometwo", {
+        res.render("home", {
             burgers: data
         })
     })
@@ -62,7 +64,7 @@ app.get("*", function (req, res) {
 app.post("/api/burger", function (req, res) {
     connection.query("INSERT INTO burgers SET ?", [req.body], function(err, data){
         if(err) throw err;
-        res.redirect("/hometwo");
+        res.redirect("/home");
     })
 });
 

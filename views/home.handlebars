@@ -19,19 +19,130 @@
         </div>
     </section>
 
-    <section class="container-fluid">
-        <h1> Hello World! (via Handlebars)</h1>
 
-        <header>Here are your Burger options</header>
-        <ul id="burgers_to_eat">
-            {{#each burgers}}
-            <li>{{this.burger_name}}</li>
-            {{/each}}
-        </ul>
+    <section class="container fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Create a Delicious Burger!</h2>
+            </div>
+        </div>
 
+        {{!-- these two - action="/api/burger" method="POST" - added to form make the submission trigger the server listener .... replaced by an ajax call in 'script' section of this document: --}}
+        <div class="row">
+            <div class="col-lg-6">
+                <form class="create-form" id="add-burger">
+                    <div class="form-group">
+                        <label for="b_name">Burger Name:</label>
+                        <input type="text" id="b_name" name="burger_name">
+                        <p> </p>
+                        <label for="m_type">Meat type:</label>
+                        <input type="text" id="m_type" name="meat_type">
+                        <p></p>
+                        <button type="submit">Add Burger</button>
+                </form>
+            </div>
+        </div>
     </section>
 
+    <section class="container fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Burger options</h2>
+            </div>
+        </div>
 
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">db id</th>
+                    <th scope="col">Burger Name</th>
+                    <th scope="col">type of meat</th>
+                    <th scope="col">edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each burgers}}
+                {{#unless devoured}}
+                <tr>
+                    <th scope="row">{{this.id}}</th>
+                    <td> {{this.burger_name}}</td>
+                    <td>{{this.meat_type}}</td>
+                    <td>
+                        <button type="button" data-id="{{this.id}}" class="btn btn-outline-danger btn-sm del-burger">delete</button>
+
+                        <button type="button" class="btn btn-success btn-sm eat-burger" data-id="{{this.id}}">eat</button>
+                    </td>
+                </tr>
+                {{/unless}}
+                {{/each}}
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Burgers you ate</h2>
+                <ul>
+                    {{#each burgers}}
+                    {{#if devoured}}
+                    <li> {{this.burger_name}}  featuring  {{this.meat_type}}  <button type="button" data-id="{{this.id}}" class="btn btn-outline-danger btn-sm del-burger">delete</button></li>
+                    <p></p>
+                    {{/if}}
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        $(".del-burger").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+            $.ajax({
+                url: `/api/burger/${id}`,
+                method: "DELETE"
+            }).then(function (data) {
+                if (data) {
+                    console.log(data.burger_name);
+                    location.reload();
+                }
+            })
+        })
+
+        $("#add-burger").on("submit", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/api/burger",
+                method: "POST",
+                data: {
+                    burger_name: $("#b_name").val().trim(),
+                    meat_type: $("#m_type").val().trim(),
+                    devoured: 0,
+                }
+            }).then(function (data) {
+                if (data) {
+                    location.reload()
+                }
+            })
+        })
+
+        $(".eat-burger").on("click", function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+            $.ajax({
+                url: `/api/burger/${id}`,
+                method: "PUT",
+                data: {
+                    devoured: 1,
+                }
+            }).then(function (data) {
+                if (data) {
+                    location.reload()
+                }
+            })
+        })
+
+
+    </script>
 </body>
 
 </html>
